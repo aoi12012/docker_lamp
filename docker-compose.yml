@@ -1,0 +1,24 @@
+version: "3"
+services:
+  db:
+    build: ./mysql/
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./log/:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+    privileged: true
+    command: /sbin/init
+  centos_php:
+    build: ./php/
+    expose:
+      - '25'
+    ports:
+      - '80:80'
+    volumes:
+      - ./src/:/data
+    links:
+      - db
+    privileged: true
+    command: /sbin/init
